@@ -27,7 +27,6 @@ export const getChatCompletion = async (
 
     const model = modelmapping[config.model] || config.model;
 
-    // set api version to 2023-07-01-preview for gpt-4 and gpt-4-32k, otherwise use 2023-03-15-preview
     const apiVersion =
       model === 'gpt-4' || model === 'gpt-4-32k'
         ? '2023-07-01-preview'
@@ -43,12 +42,15 @@ export const getChatCompletion = async (
     }
   }
 
+  // Create a new config object without frequency_penalty and presence_penalty
+  const { frequency_penalty, presence_penalty, ...modifiedConfig } = config;
+
   const response = await fetch(endpoint, {
     method: 'POST',
     headers,
     body: JSON.stringify({
       messages,
-      ...config,
+      ...modifiedConfig, // Use modified config that excludes the penalties
       max_tokens: undefined,
     }),
   });
@@ -81,11 +83,11 @@ export const getChatCompletionStream = async (
 
     const model = modelmapping[config.model] || config.model;
 
-    // set api version to 2023-07-01-preview for gpt-4 and gpt-4-32k, otherwise use 2023-03-15-preview
     const apiVersion =
       model === 'gpt-4' || model === 'gpt-4-32k'
         ? '2023-07-01-preview'
         : '2023-03-15-preview';
+
     const path = `openai/deployments/${model}/chat/completions?api-version=${apiVersion}`;
 
     if (!endpoint.endsWith(path)) {
@@ -96,19 +98,22 @@ export const getChatCompletionStream = async (
     }
   }
 
+  // Create a new config object without frequency_penalty and presence_penalty
+  const { frequency_penalty, presence_penalty, ...modifiedConfig } = config;
+
   const response = await fetch(endpoint, {
     method: 'POST',
     headers,
     body: JSON.stringify({
       messages,
-      ...config,
+      ...modifiedConfig, // Use modified config that excludes the penalties
       max_tokens: undefined,
       stream: true,
     }),
   });
+
   if (response.status === 404 || response.status === 405) {
     const text = await response.text();
-
     if (text.includes('model_not_found')) {
       throw new Error(
         text +
