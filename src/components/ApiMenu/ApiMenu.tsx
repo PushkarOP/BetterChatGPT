@@ -40,7 +40,9 @@ const ApiMenu = ({
     _setCustomEndpoint((prev) => !prev);
   };
 
-  return 
+  return (
+  // Your JSX or other return content here
+  );
 const ApiEndpointSelector = ({
   _apiEndpoint,
   _setApiEndpoint,
