@@ -35,14 +35,24 @@ const ApiMenu = ({
   };
 
   const handleToggleCustomEndpoint = () => {
-    if (_customEndpoint) _setApiEndpoint(defaultAPIEndpoint);
-    else _setApiEndpoint('');
-    _setCustomEndpoint((prev) => !prev);
+    // Do nothing
   };
 
   return (
-  // Your JSX or other return content here
+    <div>
+      {/* Your JSX content here */}
+      <ApiEndpointSelector
+        _apiEndpoint={_apiEndpoint}
+        _setApiEndpoint={_setApiEndpoint}
+      />
+      <button onClick={handleSave}>Save</button>
+      <button onClick={handleToggleCustomEndpoint}>
+        Toggle Custom Endpoint
+      </button>
+    </div>
   );
+};
+
 const ApiEndpointSelector = ({
   _apiEndpoint,
   _setApiEndpoint,
