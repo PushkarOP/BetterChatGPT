@@ -20,6 +20,7 @@ export const getChatCompletion = async (
   endpoint: string,
   messages: MessageInterface[],
   config: ConfigInterface,
+  apiKey?: string,
   customHeaders?: Record<string, string>
 ) => {
   const recaptchaToken = await executeRecaptcha('getChatCompletion');
