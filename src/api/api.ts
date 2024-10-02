@@ -30,7 +30,7 @@ export const getChatCompletion = async (
     'Recaptcha-Token': recaptchaToken,
     ...customHeaders,
   };
-  const apiKey = "sk-G74ZCYvhv6DHlyWRak67hRLK2XD8A9Q_r21uHbt1KDoqkQEO"
+  //const apiKey = "sk-G74ZCYvhv6DHlyWRak67hRLK2XD8A9Q_r21uHbt1KDoqkQEO"
   if (apiKey) headers.Authorization = `Bearer ${apiKey}`;
 
   if (isAzureEndpoint(endpoint) && apiKey) {
