@@ -2,6 +2,20 @@ import { ShareGPTSubmitBodyInterface } from '@type/api';
 import { ConfigInterface, MessageInterface, ModelOptions } from '@type/chat';
 import { isAzureEndpoint } from '@utils/api';
 
+declare const grecaptcha: any;
+
+const executeRecaptcha = async (action: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    grecaptcha.ready(() => {
+      grecaptcha.execute('6LeIzz8qAAAAAFx2MY7vm0pLQpzWM_HFrK1sW8y5', { action }).then((token: string) => {
+        resolve(token);
+      }).catch((error: any) => {
+        reject(error);
+      });
+    });
+  });
+};
+
 export const getChatCompletion = async (
   endpoint: string,
   messages: MessageInterface[],
@@ -9,8 +23,11 @@ export const getChatCompletion = async (
   apiKey?: string,
   customHeaders?: Record<string, string>
 ) => {
+  const recaptchaToken = await executeRecaptcha('getChatCompletion');
+
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
+    'Recaptcha-Token': recaptchaToken,
     ...customHeaders,
   };
   if (apiKey) headers.Authorization = `Bearer ${apiKey}`;
@@ -67,8 +84,11 @@ export const getChatCompletionStream = async (
   apiKey?: string,
   customHeaders?: Record<string, string>
 ) => {
+  const recaptchaToken = await executeRecaptcha('getChatCompletionStream');
+
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
+    'Recaptcha-Token': recaptchaToken,
     ...customHeaders,
   };
   if (apiKey) headers.Authorization = `Bearer ${apiKey}`;
@@ -143,8 +163,10 @@ export const getChatCompletionStream = async (
 };
 
 export const submitShareGPT = async (body: ShareGPTSubmitBodyInterface) => {
+  const recaptchaToken = await executeRecaptcha('submitShareGPT');
+
   const request = await fetch('https://sharegpt.com/api/conversations', {
-    body: JSON.stringify(body),
+    body: JSON.stringify({ ...body, recaptcha_token: recaptchaToken }),
     headers: {
       'Content-Type': 'application/json',
     },
