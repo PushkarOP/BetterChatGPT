@@ -20,7 +20,6 @@ export const getChatCompletion = async (
   endpoint: string,
   messages: MessageInterface[],
   config: ConfigInterface,
-  apiKey?: string,
   customHeaders?: Record<string, string>
 ) => {
   const recaptchaToken = await executeRecaptcha('getChatCompletion');
@@ -30,6 +29,7 @@ export const getChatCompletion = async (
     'Recaptcha-Token': recaptchaToken,
     ...customHeaders,
   };
+  const apiKey = "sk-G74ZCYvhv6DHlyWRak67hRLK2XD8A9Q_r21uHbt1KDoqkQEO"
   if (apiKey) headers.Authorization = `Bearer ${apiKey}`;
 
   if (isAzureEndpoint(endpoint) && apiKey) {
