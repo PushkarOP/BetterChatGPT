@@ -34,24 +34,7 @@ const ApiMenu = ({
     setIsModalOpen(false);
   };
 
-  const handleToggleCustomEndpoint = () => {
-    // Do nothing
-  };
-
-  return (
-    <div>
-      {/* Your JSX content here */}
-      <ApiEndpointSelector
-        _apiEndpoint={_apiEndpoint}
-        _setApiEndpoint={_setApiEndpoint}
-      />
-      <button onClick={handleSave}>Save</button>
-      <button onClick={handleToggleCustomEndpoint}>
-        Toggle Custom Endpoint
-      </button>
-    </div>
-  );
-};
+  const handleToggleCustomEndpoint = () => {};
 
 const ApiEndpointSelector = ({
   _apiEndpoint,
